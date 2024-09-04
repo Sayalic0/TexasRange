@@ -5,23 +5,56 @@
     <title>Bites</title>
     <style>
         .table-cell {
-            width: 50px;
-            height: 50px;
-            border: solid black;
-            display: inline-block;
+            /*width: 50px;*/
+            /*height: 50px;*/
+            border: 1px solid black;
+            margin: 0;
+            padding: 5px;
+        }
+        #range-table {
+            border-spacing: 0;
+            border-collapse: collapse;
         }
     </style>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-<div id="range-table">
-    <div class="table-row">
-        <div class="table-cell">
-            AA
-        </div>
-        <div class="table-cell">
-            AKs
-        </div>
+    <div id="app">
+        <table id="range-table">
+            <tr v-for="hand in hands" class="table-row">
+                <td v-for="h in hand" class="table-cell">
+                    {{ h.text }}
+                </td>
+            </tr>
+        </table>
     </div>
-</div>
+    <script>
+        const {createApp} = Vue
+        createApp({
+            setup() {
+                const poker_numbers = 'AKQJT987654321'
+                var hands = []
+                for (let i = 0; i < 13; i++) {
+                    hands.push([])
+                    for (let j = 0; j < 13; j++) {
+                        h = {}
+                        if (i < j) {
+                            h.text = poker_numbers[i] + poker_numbers[j]
+                            h.text += 's'
+                        } else if (i > j) {
+                            h.text = poker_numbers[j] + poker_numbers[i]
+                            h.text += 'o'
+                        } else {
+                            h.text = poker_numbers[i] + poker_numbers[j]
+                        }
+                        hands[i].push(h)
+                    }
+                }
+                return {
+                    hands
+                }
+            }
+        }).mount('#app')
+    </script>
 </body>
 </html>
